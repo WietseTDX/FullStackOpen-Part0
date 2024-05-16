@@ -1,0 +1,21 @@
+flowchart TD
+    Start(Callback: form.onsubmit)
+    PreventDefault(Prevent Default form handeling)
+    ConstructDataObject(Construct note object literal)
+    AddNoteToLocalData(Add new note to local note array)
+    subgraph RedrawNotes
+        Build(Build html form note array)
+        RemoveCurrenthtml(Remove current HTML list)
+        AddInNewHTML(Add in new HTML list)
+        Build --> RemoveCurrenthtml --> AddInNewHTML
+    end
+    subgraph SendToServer
+        ReadyToSend{Is it ready <br>to send}
+        ReadyToSend  -- Not Ready --> ReadyToSend
+        ReadyToSend  -- Ready --> OpenPostRequest
+        OpenPostRequest(Open POST Request)
+        SetHeaders(Set request headers)
+        Send(Send JSON data to server)
+        OpenPostRequest --> SetHeaders --> Send
+    end
+    Start --> PreventDefault --> ConstructDataObject --> AddNoteToLocalData --> RedrawNotes --> SendToServer
